@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portal Akademik Fiktif - Universitas Nusantara</title>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      background: #1e3a8a;
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .brand h1 { font-size: 18px; font-weight: 700; }
+    .brand p { font-size: 12px; color: #93c5fd; }
+    .user-nav { display: flex; align-items: center; gap: 12px; }
+    .badge-role {
+      background: rgba(255,255,255,0.2);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .btn-logout {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .banner-vuln {
+      background: var(--warning-bg);
+      border-bottom: 1px solid #fde68a;
+      padding: 10px 24px;
+      font-size: 13px;
+      color: #92400e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-vuln-info {
+      background: var(--warning);
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .container {
+      max-width: 1050px;
+      margin: 24px auto;
+      padding: 0 20px;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .nav-tab {
+      padding: 8px 16px;
+      border: none;
+      background: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .nav-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 14px;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .field { margin-bottom: 16px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #334155; }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-sm { padding: 6px 10px; font-size: 12px; }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .table th, .table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .table th { background: #f1f5f9; color: #475569; font-weight: 600; }
+    .table tr:hover { background: #f8fafc; }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .pill-green { background: var(--success-bg); color: var(--success); }
+    .pill-red { background: var(--danger-bg); color: var(--danger); }
+    .pill-yellow { background: var(--warning-bg); color: var(--warning); }
+    .forum-item {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: #fafafa;
+    }
+    .forum-author { font-size: 13px; font-weight: 700; color: #1e3a8a; margin-bottom: 4px; }
+    .forum-time { font-size: 11px; color: var(--muted); margin-left: 8px; font-weight: 400; }
+    .forum-text { font-size: 14px; color: #334155; margin-top: 4px; }
+    
+    /* Login Box */
+    .login-container {
+      max-width: 440px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+    .quick-logins {
+      margin-top: 16px;
+      background: #f1f5f9;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+    .quick-logins p { margin-bottom: 8px; font-weight: 600; color: #475569; }
+    .quick-btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .sql-code-box {
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 12px;
+      margin-top: 10px;
+      word-break: break-all;
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+    .modal-overlay[hidden] { display: none; }
+    .modal-card {
+      background: white;
+      border-radius: 12px;
+      max-width: 650px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 24px;
+    }
+    .vuln-guide-item {
+      background: #f8fafc;
+      border-left: 4px solid var(--danger);
+      padding: 12px;
+      margin-bottom: 14px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .vuln-guide-item h4 { color: #991b1b; font-size: 14px; margin-bottom: 4px; }
+    code { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1>Portal Akademik Universitas Nusantara</h1>
+    <p>Aplikasi Kampus Fiktif · PMI 1522 Keamanan Sistem Informasi</p>
+  </div>
+  <div class="user-nav" id="user-nav">
+    <span id="nav-user-name" class="badge-role">Tamu</span>
+    <button id="btn-logout" class="btn-logout" style="display:none;">Keluar</button>
+  </div>
+</header>
+
+<div class="banner-vuln">
+  <span>⚠️ <strong>Aplikasi Latihan Kerentanan:</strong> Dibuat sengaja memiliki celah <strong>SQL Injection</strong> &amp; <strong>Stored XSS</strong> untuk pembelajaran keamanan.</span>
+  <button id="btn-open-vuln-modal" class="btn-vuln-info">ℹ️ Panduan Demo Celah</button>
+</div>
+
+<!-- ================= LOGIN VIEW ================= -->
+<div id="view-login" class="login-container">
+  <div class="card">
+    <h2>Masuk Portal Akademik</h2>
+    <div id="login-alert" style="display:none; padding:10px; border-radius:6px; margin-bottom:12px; font-size:13px;"></div>
+    
+    <form id="form-login">
+      <div class="field">
+        <label for="username">Username / NIM / NIDN:</label>
+        <input id="username" type="text" placeholder="Masukkan username" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="password">Kata Sandi:</label>
+        <input id="password" type="password" placeholder="Masukkan kata sandi">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Masuk Sistem</button>
+    </form>
+
+    <div class="sql-code-box">
+      <strong>Query SQL Yang Dieksekusi:</strong><br>
+      <span id="sql-preview">SELECT * FROM users WHERE username = '...' AND password = '...'</span>
+    </div>
+
+    <div class="quick-logins">
+      <p>Akses Cepat Pengujian (1-Click):</p>
+      <div class="quick-btn-grid">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="quickLogin('24781018', 'password123')">Mahasiswa (Nadiya)</button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="quickLogin('19850101', 'dosen123')">Dosen (Pak Ahmad)</button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="quickLogin('admin', 'admin123')">Administrator</button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="exploitSqlInjection()">⚡ Eksploit SQL Injection</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD VIEW ================= -->
+<div id="view-dashboard" class="container" style="display:none;">
+  <nav class="nav-tabs" id="nav-tabs">
+    <button class="nav-tab active" data-tab="tab-nilai">Melihat Nilai</button>
+    <button class="nav-tab" data-tab="tab-tugas" id="tab-btn-tugas">Unggah Tugas</button>
+    <button class="nav-tab" data-tab="tab-forum">Forum Diskusi</button>
+    <button class="nav-tab" data-tab="tab-dosen" id="tab-btn-dosen" style="display:none;">Penilaian Dosen</button>
+    <button class="nav-tab" data-tab="tab-admin" id="tab-btn-admin" style="display:none;">Kelola Akun (Admin)</button>
+  </nav>
+
+  <!-- TAB: NILAI MAHASISWA -->
+  <div id="tab-nilai" class="tab-content">
+    <div class="card">
+      <h2>📊 Kartu Hasil Studi (KHS) Sintetis</h2>
+      <p style="color:var(--muted); font-size:13px; margin-bottom:14px;">Menampilkan capaian nilai semester aktif untuk akun mahasiswa yang sedang login.</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Kode MK</th>
+            <th>Nama Mata Kuliah</th>
+            <th>SKS</th>
+            <th>Nilai Huruf</th>
+            <th>Nilai Angka</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-nilai"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: UNGGAH TUGAS (MAHASISWA) -->
+  <div id="tab-tugas" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>📤 Unggah Tugas Kuliah (Kerentanan: Validasi Berkas Lemah)</h2>
+      <p style="color:var(--muted); font-size:13px; margin-bottom:14px;">Mahasiswa dapat mengumpulkan laporan praktikum. <em>(Catatan keamanan: server tidak menyaring ekstensi berkas, sehingga file .php atau .html dapat diunggah).</em></p>
+      
+      <form id="form-upload-tugas">
+        <div class="field">
+          <label>Mata Kuliah:</label>
+          <select id="tugas-mk">
+            <option>PMI 1522 Keamanan Sistem Informasi</option>
+            <option>PMI 1523 Pemrograman Web Lanjut</option>
+            <option>PMI 1524 Jaringan Komputer</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Catatan Pengumpulan:</label>
+          <input type="text" id="tugas-catatan" placeholder="Contoh: Pengumpulan Laporan Praktikum P6">
+        </div>
+        <div class="field">
+          <label>Pilih Berkas Tugas:</label>
+          <input type="file" id="tugas-file" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Kirim Berkas Tugas</button>
+      </form>
+
+      <h3 style="margin-top:24px; font-size:15px;">Daftar Tugas Yang Telah Diunggah:</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Waktu</th>
+            <th>Mata Kuliah</th>
+            <th>Nama Berkas</th>
+            <th>Catatan</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-tugas"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: FORUM DISKUSI (STORED XSS) -->
+  <div id="tab-forum" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>💬 Forum Diskusi Akademik (Kerentanan: Stored XSS)</h2>
+      <p style="color:var(--muted); font-size:13px; margin-bottom:14px;">Ruang tanya jawab antara mahasiswa dan dosen. <em>(Catatan keamanan: input pesan dirender langsung ke innerHTML tanpa sanitasi).</em></p>
+      
+      <form id="form-forum" style="margin-bottom:20px;">
+        <div class="field">
+          <label>Tulis Pesan Diskusi:</label>
+          <textarea id="forum-pesan" placeholder="Tulis tanggapan atau pertanyaan diskusi..." required></textarea>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+          <button type="button" class="btn btn-danger btn-sm" onclick="injectXssPayload()">⚡ Uji Coba Payload Stored XSS</button>
+        </div>
+      </form>
+
+      <h3>Diskusi Terbaru:</h3>
+      <div id="forum-list" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- TAB: DOSEN (INPUT NILAI) -->
+  <div id="tab-dosen" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>👨‍🏫 Panel Dosen: Penilaian Mahasiswa</h2>
+      <p style="color:var(--muted); font-size:13px; margin-bottom:14px;">Dosen dapat menginput dan memperbarui nilai mahasiswa secara langsung.</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>NIM</th>
+            <th>Nama Mahasiswa</th>
+            <th>Mata Kuliah</th>
+            <th>Nilai Saat Ini</th>
+            <th>Ubah Nilai</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-dosen-nilai"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: ADMIN (KELOLA AKUN) -->
+  <div id="tab-admin" class="tab-content" style="display:none;">
+    <div class="card">
+      <h2>⚙️ Panel Administrator: Kelola Akun Kampus</h2>
+      <p style="color:var(--muted); font-size:13px; margin-bottom:14px;">Admin memiliki wewenang mengelola data akun mahasiswa dan dosen sintetis.</p>
+      
+      <form id="form-tambah-user" style="background:#f1f5f9; padding:16px; border-radius:8px; margin-bottom:20px;">
+        <h4 style="margin-bottom:10px;">Tambah Akun Baru:</h4>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap:10px; align-items:end;">
+          <div><label>ID / NIM / NIDN</label><input id="add-id" required></div>
+          <div><label>Nama Lengkap</label><input id="add-nama" required></div>
+          <div><label>Role</label><select id="add-role"><option value="mahasiswa">Mahasiswa</option><option value="dosen">Dosen</option><option value="admin">Admin</option></select></div>
+          <div><label>Kata Sandi</label><input id="add-pass" required></div>
+          <button type="submit" class="btn btn-primary">Tambah</button>
+        </div>
+      </form>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID / User</th>
+            <th>Nama Lengkap</th>
+            <th>Role</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-admin-users"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL PANDUAN KERENTANAN ================= -->
+<div id="modal-vuln" class="modal-overlay" hidden>
+  <div class="modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h3 style="color:#1e3a8a;">Dokumentasi 2 Kerentanan Yang Dibuat Sengaja</h3>
+      <button class="btn btn-secondary btn-sm" onclick="closeVulnModal()">Tutup</button>
+    </div>
+    
+    <div class="vuln-guide-item">
+      <h4>1. SQL Injection (Bypass Otentikasi Login)</h4>
+      <p><strong>Lokasi:</strong> Form Login Utama.</p>
+      <p><strong>Mekanisme:</strong> Nilai masukan digabungkan langsung ke string query tanpa sanitasi atau parameterisasi (Prepared Statements):<br>
+      <code>SELECT * FROM users WHERE username = '${username}' AND password = '${password}'</code></p>
+      <p><strong>Cara Membuktikan (Eksploit):</strong><br>
+      Ketik username: <code>admin' OR '1'='1</code> atau cukup klik tombol merah <strong>⚡ Eksploit SQL Injection</strong> di halaman login. Sistem akan bypass password dan langsung login sebagai akun pertama di database (Administrator)!</p>
+    </div>
+
+    <div class="vuln-guide-item">
+      <h4>2. Stored Cross-Site Scripting (Stored XSS)</h4>
+      <p><strong>Lokasi:</strong> Tab Forum Diskusi Akademik.</p>
+      <p><strong>Mekanisme:</strong> Komentar forum disimpan ke memori/penyimpanan dan ditampilkan kembali menggunakan properti <code>element.innerHTML = pesan</code> tanpa encoding HTML (seperti <code>htmlspecialchars</code>).</p>
+      <p><strong>Cara Membuktikan (Eksploit):</strong><br>
+      Ketik pesan forum: <code>&lt;img src=x onerror="alert('Celah Stored XSS Terbuka!')"&gt;</code><br>
+      Pesan akan tersimpan dan script akan langsung tereksekusi pada setiap pengguna yang membuka tab Forum Diskusi!</p>
+    </div>
+
+    <div class="vuln-guide-item" style="border-left-color:#0284c7;">
+      <h4 style="color:#0369a1;">3. Kerentanan Tambahan: Validasi Berkas Lemah (Unrestricted Upload)</h4>
+      <p><strong>Lokasi:</strong> Form Unggah Tugas Mahasiswa.</p>
+      <p><strong>Mekanisme:</strong> Form tidak membatasi tipe ekstensi berkas (whitelist), sehingga file berekstensi berbahaya (misal <code>.php</code>, <code>.html</code>) dapat terunggah ke sistem.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================= DATABASE SINTETIS (LOCALSTORAGE) =================
+const DEFAULT_USERS = [
+  { id: "admin", nama: "Administrator Sistem (Sintetis)", role: "admin", pass: "admin123" },
+  { id: "19850101", nama: "Dr. Ir. Ahmad Jayadi, M.Kom (Sintetis)", role: "dosen", pass: "dosen123" },
+  { id: "24781018", nama: "Nadiya Ghefira (Sintetis)", role: "mahasiswa", pass: "password123" },
+  { id: "24781019", nama: "Bima Prasetyo (Sintetis)", role: "mahasiswa", pass: "password123" }
+];
+
+const DEFAULT_NILAI = [
+  { nim: "24781018", kode: "PMI1522", mk: "Keamanan Sistem Informasi", sks: 3, angka: 88, huruf: "A" },
+  { nim: "24781018", kode: "PMI1523", mk: "Pemrograman Web Lanjut", sks: 3, angka: 85, huruf: "A" },
+  { nim: "24781018", kode: "PMI1524", mk: "Jaringan Komputer", sks: 2, angka: 80, huruf: "B+" },
+  { nim: "24781019", kode: "PMI1522", mk: "Keamanan Sistem Informasi", sks: 3, angka: 75, huruf: "B" },
+  { nim: "24781019", kode: "PMI1523", mk: "Pemrograman Web Lanjut", sks: 3, angka: 78, huruf: "B+" }
+];
+
+const DEFAULT_FORUM = [
+  { author: "Dr. Ir. Ahmad Jayadi, M.Kom", time: "16 Okt 2026, 08:30", text: "Selamat pagi rekan-rekan mahasiswa, jangan lupa menyelesaikan praktikum P6 tentang keamanan." },
+  { author: "Nadiya Ghefira", time: "16 Okt 2026, 09:15", text: "Baik Pak, pengujian simulasi keamanan sedang kami jalankan dan dokumentasikan." }
+];
+
+let db = {
+  users: JSON.parse(localStorage.getItem("kampus_users")) || DEFAULT_USERS,
+  nilai: JSON.parse(localStorage.getItem("kampus_nilai")) || DEFAULT_NILAI,
+  forum: JSON.parse(localStorage.getItem("kampus_forum")) || DEFAULT_FORUM,
+  tugas: JSON.parse(localStorage.getItem("kampus_tugas")) || []
+};
+
+function saveDb() {
+  localStorage.setItem("kampus_users", JSON.stringify(db.users));
+  localStorage.setItem("kampus_nilai", JSON.stringify(db.nilai));
+  localStorage.setItem("kampus_forum", JSON.stringify(db.forum));
+  localStorage.setItem("kampus_tugas", JSON.stringify(db.tugas));
+}
+
+let currentUser = JSON.parse(sessionStorage.getItem("kampus_current_user")) || null;
+
+// ================= AUTENTIKASI DENGAN SIMULASI SQL INJECTION =================
+const formLogin = document.getElementById("form-login");
+const inputUser = document.getElementById("username");
+const inputPass = document.getElementById("password");
+const sqlPreview = document.getElementById("sql-preview");
+const loginAlert = document.getElementById("login-alert");
+
+inputUser.addEventListener("input", updateSqlPreview);
+inputPass.addEventListener("input", updateSqlPreview);
+
+function updateSqlPreview() {
+  const u = inputUser.value;
+  const p = inputPass.value;
+  sqlPreview.textContent = `SELECT * FROM users WHERE username = '${u}' AND password = '${p}'`;
+}
+
+function quickLogin(u, p) {
+  inputUser.value = u;
+  inputPass.value = p;
+  updateSqlPreview();
+  formLogin.dispatchEvent(new Event("submit"));
+}
+
+function exploitSqlInjection() {
+  inputUser.value = "' OR '1'='1";
+  inputPass.value = "apa_saja";
+  updateSqlPreview();
+  loginAlert.style.display = "block";
+  loginAlert.style.background = "#fee2e2";
+  loginAlert.style.color = "#991b1b";
+  loginAlert.innerHTML = "⚡ <strong>Payload SQL Injection terpasang:</strong> Kondisi <code>'1'='1'</code> selalu bernilai benar (TRUE). Mengabaikan pengecekan password!";
+  setTimeout(() => formLogin.dispatchEvent(new Event("submit")), 600);
+}
+
+formLogin.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const u = inputUser.value.trim();
+  const p = inputPass.value.trim();
+
+  // CELAH KERENTANAN 1: SQL INJECTION SIMULATION
+  // Jika input mengandung pola SQL Injection bypass OR '1'='1
+  if (/'\s*OR\s*['"]?1['"]?\s*=\s*['"]?1/i.test(u) || /admin'\s*--/i.test(u)) {
+    // Berhasil tembus SQL Injection! Ambil akun pertama (Admin)
+    currentUser = db.users[0];
+    sessionStorage.setItem("kampus_current_user", JSON.stringify(currentUser));
+    alert("⚠️ [SQL INJECTION BERHASIL]\n\nQuery otentikasi di-bypass melalui injeksi logika (' OR '1'='1'). Berhasil masuk tanpa otentikasi valid!");
+    showDashboard();
+    return;
+  }
+
+  // Pencocokan normal
+  const user = db.users.find(x => x.id.toLowerCase() === u.toLowerCase() && x.pass === p);
+  if (user) {
+    currentUser = user;
+    sessionStorage.setItem("kampus_current_user", JSON.stringify(currentUser));
+    showDashboard();
+  } else {
+    loginAlert.style.display = "block";
+    loginAlert.style.background = "#fee2e2";
+    loginAlert.style.color = "#991b1b";
+    loginAlert.textContent = "ID Pengguna atau Kata Sandi salah!";
+  }
+});
+
+// ================= DASHBOARD CONTROLLER =================
+function showDashboard() {
+  document.getElementById("view-login").style.display = "none";
+  document.getElementById("view-dashboard").style.display = "block";
+  document.getElementById("btn-logout").style.display = "inline-block";
+
+  const navName = document.getElementById("nav-user-name");
+  navName.textContent = `${currentUser.nama} (${currentUser.role.toUpperCase()})`;
+
+  // Atur visibilitas tab sesuai role
+  const tabBtnDosen = document.getElementById("tab-btn-dosen");
+  const tabBtnAdmin = document.getElementById("tab-btn-admin");
+  const tabBtnTugas = document.getElementById("tab-btn-tugas");
+
+  tabBtnDosen.style.display = (currentUser.role === "dosen" || currentUser.role === "admin") ? "inline-block" : "none";
+  tabBtnAdmin.style.display = (currentUser.role === "admin") ? "inline-block" : "none";
+  tabBtnTugas.style.display = (currentUser.role === "mahasiswa" || currentUser.role === "admin") ? "inline-block" : "none";
+
+  renderNilai();
+  renderForum();
+  renderTugas();
+  if (currentUser.role === "dosen" || currentUser.role === "admin") renderDosenPanel();
+  if (currentUser.role === "admin") renderAdminPanel();
+}
+
+function showLogin() {
+  currentUser = null;
+  sessionStorage.removeItem("kampus_current_user");
+  document.getElementById("view-login").style.display = "block";
+  document.getElementById("view-dashboard").style.display = "none";
+  document.getElementById("btn-logout").style.display = "none";
+  document.getElementById("nav-user-name").textContent = "Tamu";
+  inputUser.value = "";
+  inputPass.value = "";
+  loginAlert.style.display = "none";
+  updateSqlPreview();
+}
+
+document.getElementById("btn-logout").addEventListener("click", showLogin);
+
+// Tab navigation handler
+document.querySelectorAll(".nav-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).style.display = "block";
+  });
+});
+
+// ================= FITUR NILAI =================
+function renderNilai() {
+  const tbody = document.getElementById("tbody-nilai");
+  tbody.innerHTML = "";
+  
+  // Tampilkan nilai untuk mahasiswa yang login, atau semua jika admin/dosen
+  const list = (currentUser.role === "mahasiswa") 
+    ? db.nilai.filter(x => x.nim === currentUser.id)
+    : db.nilai;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted);">Belum ada data nilai tercatat.</td></tr>`;
+    return;
+  }
+
+  list.forEach(n => {
+    tbody.innerHTML += `
+      <tr>
+        <td><strong>${n.kode}</strong></td>
+        <td>${n.mk}</td>
+        <td>${n.sks}</td>
+        <td><span class="pill pill-green">${n.huruf}</span></td>
+        <td>${n.angka}</td>
+        <td><span class="pill pill-green">LULUS</span></td>
+      </tr>
+    `;
+  });
+}
+
+// ================= FITUR UNGGAH TUGAS (VALIDASI BERKAS LEMAH) =================
+const formTugas = document.getElementById("form-upload-tugas");
+formTugas.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const fileInput = document.getElementById("tugas-file");
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  // Catat berkas ke state
+  db.tugas.push({
+    nim: currentUser.id,
+    waktu: new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }),
+    mk: document.getElementById("tugas-mk").value,
+    namaFile: file.name,
+    catatan: document.getElementById("tugas-catatan").value || "Tugas reguler"
+  });
+  saveDb();
+  renderTugas();
+  fileInput.value = "";
+  document.getElementById("tugas-catatan").value = "";
+  alert(`Berkas "${file.name}" berhasil diunggah!`);
+});
+
+function renderTugas() {
+  const tbody = document.getElementById("tbody-tugas");
+  tbody.innerHTML = "";
+  const list = (currentUser.role === "mahasiswa")
+    ? db.tugas.filter(x => x.nim === currentUser.id)
+    : db.tugas;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--muted);">Belum ada tugas yang dikumpulkan.</td></tr>`;
+    return;
+  }
+
+  list.forEach(t => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${t.waktu}</td>
+        <td>${t.mk}</td>
+        <td><code>${t.namaFile}</code></td>
+        <td>${t.catatan}</td>
+        <td><span class="pill pill-green">Terkirim</span></td>
+      </tr>
+    `;
+  });
+}
+
+// ================= FITUR FORUM DISKUSI (STORED XSS) =================
+const formForum = document.getElementById("form-forum");
+const forumList = document.getElementById("forum-list");
+
+function injectXssPayload() {
+  document.getElementById("forum-pesan").value = `<b style="color:red;">⚠️ Halo semua!</b> <img src="invalid-image" onerror="alert('Celah Keamanan Stored XSS Terbuka!')">`;
+}
+
+formForum.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const pesan = document.getElementById("forum-pesan").value;
+  db.forum.unshift({
+    author: currentUser.nama,
+    time: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }),
+    text: pesan
+  });
+  saveDb();
+  renderForum();
+  document.getElementById("forum-pesan").value = "";
+});
+
+function renderForum() {
+  forumList.innerHTML = "";
+  db.forum.forEach(item => {
+    const el = document.createElement("div");
+    el.className = "forum-item";
+    
+    // CELAH KERENTANAN 2: STORED XSS
+    // Data komentar langsung di-assign ke innerHTML tanpa sanitasi teks!
+    el.innerHTML = `
+      <div class="forum-author">${item.author} <span class="forum-time">${item.time}</span></div>
+      <div class="forum-text">${item.text}</div>
+    `;
+    forumList.appendChild(el);
+  });
+}
+
+// ================= PANEL DOSEN (UBAH NILAI) =================
+function renderDosenPanel() {
+  const tbody = document.getElementById("tbody-dosen-nilai");
+  tbody.innerHTML = "";
+  db.nilai.forEach((n, idx) => {
+    const mhs = db.users.find(u => u.id === n.nim);
+    tbody.innerHTML += `
+      <tr>
+        <td>${n.nim}</td>
+        <td>${mhs ? mhs.nama : "Mahasiswa"}</td>
+        <td>${n.mk}</td>
+        <td><span class="pill pill-yellow">${n.angka} (${n.huruf})</span></td>
+        <td>
+          <input type="number" id="input-nilai-${idx}" value="${n.angka}" style="width:70px; padding:4px;">
+        </td>
+        <td>
+          <button class="btn btn-primary btn-sm" onclick="simpanNilai(${idx})">Simpan</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function simpanNilai(idx) {
+  const val = parseInt(document.getElementById(`input-nilai-${idx}`).value, 10);
+  if (isNaN(val)) return;
+  db.nilai[idx].angka = val;
+  db.nilai[idx].huruf = val >= 80 ? "A" : val >= 70 ? "B" : val >= 60 ? "C" : "D";
+  saveDb();
+  renderDosenPanel();
+  renderNilai();
+  alert("Nilai mahasiswa berhasil diperbarui oleh Dosen!");
+}
+
+// ================= PANEL ADMIN (KELOLA AKUN) =================
+const formAddUser = document.getElementById("form-tambah-user");
+formAddUser.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const id = document.getElementById("add-id").value.trim();
+  const nama = document.getElementById("add-nama").value.trim();
+  const role = document.getElementById("add-role").value;
+  const pass = document.getElementById("add-pass").value;
+
+  if (db.users.some(u => u.id === id)) {
+    alert("ID Pengguna sudah ada!");
+    return;
+  }
+
+  db.users.push({ id, nama, role, pass });
+  saveDb();
+  renderAdminPanel();
+  formAddUser.reset();
+  alert(`Akun baru [${role}] berhasil dibuat!`);
+});
+
+function renderAdminPanel() {
+  const tbody = document.getElementById("tbody-admin-users");
+  tbody.innerHTML = "";
+  db.users.forEach((u, idx) => {
+    tbody.innerHTML += `
+      <tr>
+        <td><code>${u.id}</code></td>
+        <td>${u.nama}</td>
+        <td><span class="pill ${u.role==='admin'?'pill-red':u.role==='dosen'?'pill-yellow':'pill-green'}">${u.role.toUpperCase()}</span></td>
+        <td>
+          ${u.id !== "admin" ? `<button class="btn btn-danger btn-sm" onclick="hapusUser(${idx})">Hapus</button>` : `<span class="pill pill-yellow">Utama</span>`}
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function hapusUser(idx) {
+  if (confirm(`Yakin ingin menghapus akun ${db.users[idx].nama}?`)) {
+    db.users.splice(idx, 1);
+    saveDb();
+    renderAdminPanel();
+  }
+}
+
+// ================= MODAL HELPERS =================
+const modalVuln = document.getElementById("modal-vuln");
+document.getElementById("btn-open-vuln-modal").addEventListener("click", () => modalVuln.hidden = false);
+function closeVulnModal() { modalVuln.hidden = true; }
+
+// Inisialisasi awal
+if (currentUser) {
+  showDashboard();
+} else {
+  showLogin();
+}
+</script>
+
+</body>
+</html>
